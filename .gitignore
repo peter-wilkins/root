@@ -1,0 +1,7 @@
+local/
+data/raw/
+data/processed/
+.env
+.env.*
+*.log
+*.tmp
