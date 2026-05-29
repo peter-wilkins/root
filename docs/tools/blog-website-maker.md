@@ -19,6 +19,7 @@ Use a static Astro blog with Markdown posts.
 | Hosting target | Static host such as Cloudflare Pages or GitHub Pages |
 | Public state | Drafts hidden until explicitly published |
 | Asset rule | Put small images in the repo; use object storage later for large media |
+| Theme rule | Generate three quick theme prototypes before the human commits to a look |
 
 ## First Questions
 
@@ -43,10 +44,25 @@ Do not block on branding, logo, analytics, newsletter, comments, or CMS.
 | 2 | Scaffold the Astro blog with `scripts/create_blog_site.py`. | A working local project appears. |
 | 3 | Create a home page that says what the blog is and why it exists. | The first screen is real content, not template filler. |
 | 4 | Create `/blog/` with title plus TLDR cards. | Readers can scan without opening every post. |
-| 5 | Create one welcome post and one draft idea post. | The human has an editable starting point. |
-| 6 | Run `npm install` and `npm run build` when tools/network allow it. | The agent proves the site builds. |
-| 7 | Commit the scaffold. | Git becomes the recovery point. |
-| 8 | Give one preview URL or one exact next hosting step. | The human is not left holding a setup puzzle. |
+| 5 | Create `/theme-preview/` with three visual directions. | The human can choose a feel instead of describing design in abstract. |
+| 6 | Create an asset plan with `scripts/plan_blog_assets.py`. | Images are chosen deliberately and with licence metadata. |
+| 7 | Create one welcome post and one draft idea post. | The human has an editable starting point. |
+| 8 | Run `npm install` and `npm run build` when tools/network allow it. | The agent proves the site builds. |
+| 9 | Commit the scaffold. | Git becomes the recovery point. |
+| 10 | Give one preview URL or one exact next hosting step. | The human is not left holding a setup puzzle. |
+
+## Theme Prototypes
+
+The default scaffold should include three quick theme directions:
+
+| Prototype | Feel | Good For |
+| --- | --- | --- |
+| Field Guide | Grounded, practical, outdoor, helpful. | Nature, repair, teaching, public-good projects. |
+| Editorial | Magazine-like, expressive, campaign-ready. | Essays, opinion, storytelling, public launches. |
+| Notebook | Quiet, readable, workmanlike. | Research notes, personal logs, technical writing. |
+
+The user can pick one, combine parts, or ask for another three. This is faster
+than asking a non-designer to describe a theme from scratch.
 
 ## Content Rules
 
@@ -57,6 +73,34 @@ Do not block on branding, logo, analytics, newsletter, comments, or CMS.
 | Use drafts by default. | Publication should be explicit. |
 | Prefer matrices for comparisons. | Tables make options easier to scan. |
 | Keep pages plain and readable first. | The writing matters more than theme polish. |
+
+## Asset Selection
+
+Use `scripts/plan_blog_assets.py` before adding images.
+
+The tool should produce an asset matrix with:
+
+| Field | Why |
+| --- | --- |
+| Role | Hero, about image, post card, share image, etc. |
+| Search query | Keeps the image search reproducible. |
+| Source URL | Lets a later editor audit where the image came from. |
+| Creator | Attribution and provenance. |
+| Licence | The permission basis for use. |
+| Alt text | Accessibility and meaning. |
+| Approval | Human confirms the image fits and is safe. |
+
+Default source preference:
+
+| Source | Use When | Licence Note |
+| --- | --- | --- |
+| Openverse | You want Creative Commons or public-domain assets with explicit licence metadata. | Check the specific licence and attribution. |
+| Unsplash | You want high-quality free photos and can record source/creator. | Free commercial/non-commercial use; attribution appreciated. |
+| Pexels | You want free website/blog photos or videos. | Free use and modification; avoid implying endorsement. |
+| Pixabay | You want broad media options including images, video, audio, and illustrations. | Free use with prohibited-use restrictions; check trademarks/people. |
+
+Avoid saying "copyright-free" to users. Say "permission-safe" or
+"licence-safe" unless the asset is genuinely public domain.
 
 ## File Shape
 
@@ -105,3 +149,5 @@ to that subfolder.
 Use `prompts/blog-website-maker.md` when starting an agent in this mode.
 
 Use `scripts/create_blog_site.py` for the first scaffold.
+
+Use `scripts/plan_blog_assets.py` for the first image plan.

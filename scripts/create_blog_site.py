@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import re
+import shlex
 from pathlib import Path
 
 
@@ -71,6 +72,19 @@ npm run dev
 npm run build
 ```
 
+Theme prototypes:
+
+```bash
+npm run dev
+# open /theme-preview/
+```
+
+Asset plan:
+
+```bash
+python3 scripts/plan_blog_assets.py --name {shell_quote(site_name)} --subject {shell_quote(subject)}
+```
+
 Posts live in:
 
 ```text
@@ -125,6 +139,7 @@ export function visiblePosts(posts: CollectionEntry<"posts">[]) {
 """,
         "src/layouts/BaseLayout.astro": f"""---
 import "../styles/global.css";
+import "../styles/themes.css";
 
 interface Props {{
   title?: string;
@@ -149,7 +164,10 @@ const {{
     <header class="site-header">
       <nav aria-label="Primary">
         <a class="brand" href="/">{escape_astro(site_name)}</a>
-        <a href="/blog/">Posts</a>
+        <div class="nav-links">
+          <a href="/blog/">Posts</a>
+          <a href="/theme-preview/">Themes</a>
+        </div>
       </nav>
     </header>
     <main>
@@ -176,6 +194,58 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       This site collects clear, practical writing about {escape_astro(subject)}.
       It starts small: useful posts, plain language, and enough structure to keep
       writing easy to scan.
+    </p>
+  </section>
+</BaseLayout>
+""",
+        "src/pages/theme-preview.astro": f"""---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Theme Preview" description="Three quick visual directions for {escape_astro(site_name)}.">
+  <section class="page-title">
+    <p class="eyebrow">Theme choice</p>
+    <h1>Three directions</h1>
+    <p class="lede">Pick the direction that feels closest. The site can keep one, combine parts, or ask for another three.</p>
+  </section>
+
+  <section class="theme-preview-grid" aria-label="Theme prototypes">
+    <article class="theme-preview-card theme-field-guide">
+      <p class="theme-label">Prototype 1</p>
+      <h2>Field Guide</h2>
+      <p>Practical, grounded, and useful. Good for teaching, nature, repair, field notes, and public-interest work.</p>
+      <div class="theme-swatch-row">
+        <span></span><span></span><span></span>
+      </div>
+      <a href="/blog/">Read posts</a>
+    </article>
+
+    <article class="theme-preview-card theme-editorial">
+      <p class="theme-label">Prototype 2</p>
+      <h2>Editorial</h2>
+      <p>More magazine-like. Good for public essays, stories, campaigning, opinion, and visual identity.</p>
+      <div class="theme-swatch-row">
+        <span></span><span></span><span></span>
+      </div>
+      <a href="/blog/">Read posts</a>
+    </article>
+
+    <article class="theme-preview-card theme-notebook">
+      <p class="theme-label">Prototype 3</p>
+      <h2>Notebook</h2>
+      <p>Quiet, direct, and low-friction. Good for personal notes, project logs, research, and frequent writing.</p>
+      <div class="theme-swatch-row">
+        <span></span><span></span><span></span>
+      </div>
+      <a href="/blog/">Read posts</a>
+    </article>
+  </section>
+
+  <section class="section">
+    <h2>Asset Direction</h2>
+    <p>
+      After choosing a theme, generate an asset plan with <code>scripts/plan_blog_assets.py</code>.
+      The first pass should propose search queries and licence-safe sources before downloading or publishing images.
     </p>
   </section>
 </BaseLayout>
@@ -269,11 +339,18 @@ nav {
   align-items: center;
   justify-content: space-between;
   gap: 16px;
+  flex-wrap: wrap;
 }
 
 .brand {
   font-weight: 800;
   text-decoration: none;
+}
+
+.nav-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
 }
 
 main {
@@ -366,6 +443,82 @@ h2 {
   vertical-align: top;
 }
 """,
+        "src/styles/themes.css": """.theme-preview-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 16px;
+}
+
+.theme-preview-card {
+  min-height: 310px;
+  padding: 20px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border: 1px solid color-mix(in oklab, CanvasText 16%, transparent);
+}
+
+.theme-preview-card h2 {
+  font-size: 2rem;
+  line-height: 1.05;
+}
+
+.theme-preview-card a {
+  font-weight: 800;
+}
+
+.theme-label {
+  margin: 0;
+  font-size: 0.82rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.theme-swatch-row {
+  display: flex;
+  gap: 8px;
+  margin: 18px 0;
+}
+
+.theme-swatch-row span {
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  border: 1px solid rgba(0, 0, 0, 0.16);
+}
+
+.theme-field-guide {
+  background: #f6f4ea;
+  color: #193f35;
+  border-color: #9ab26d;
+}
+
+.theme-field-guide .theme-swatch-row span:nth-child(1) { background: #193f35; }
+.theme-field-guide .theme-swatch-row span:nth-child(2) { background: #9ab26d; }
+.theme-field-guide .theme-swatch-row span:nth-child(3) { background: #d9a441; }
+
+.theme-editorial {
+  background: #fff8f2;
+  color: #221b1b;
+  border-color: #d5523f;
+}
+
+.theme-editorial .theme-swatch-row span:nth-child(1) { background: #221b1b; }
+.theme-editorial .theme-swatch-row span:nth-child(2) { background: #d5523f; }
+.theme-editorial .theme-swatch-row span:nth-child(3) { background: #f1c27d; }
+
+.theme-notebook {
+  background: #f7f8fb;
+  color: #1f2937;
+  border-color: #8aa0b8;
+}
+
+.theme-notebook .theme-swatch-row span:nth-child(1) { background: #1f2937; }
+.theme-notebook .theme-swatch-row span:nth-child(2) { background: #8aa0b8; }
+.theme-notebook .theme-swatch-row span:nth-child(3) { background: #e7edf3; }
+""",
+        "scripts/plan_blog_assets.py": read_asset_planner_script(),
         "src/content/posts/welcome.md": f"""---
 title: "Welcome To {escape_yaml(site_name)}"
 tldr: "A short introduction to what this blog is about and why it exists."
@@ -417,6 +570,14 @@ def escape_astro(value: str) -> str:
 
 def escape_yaml(value: str) -> str:
     return value.replace("\\", "\\\\").replace('"', '\\"')
+
+
+def shell_quote(value: str) -> str:
+    return shlex.quote(value)
+
+
+def read_asset_planner_script() -> str:
+    return (Path(__file__).with_name("plan_blog_assets.py")).read_text(encoding="utf-8")
 
 
 if __name__ == "__main__":

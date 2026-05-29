@@ -20,6 +20,8 @@ the first real docs here.
 - `docs/tools/blog-website-maker.md` is the first reusable public tool
   playbook.
 - `scripts/create_blog_site.py` scaffolds a small Astro Markdown blog.
+- `scripts/plan_blog_assets.py` creates a licence-safe image-search and
+  attribution plan for a blog.
 - `docs/tools/blog-article-editor.md` covers interactive editing of existing
   articles.
 - `scripts/prepare_blog_article_edit.py` creates a rewrite/grill worksheet from
