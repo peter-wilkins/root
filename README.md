@@ -17,3 +17,6 @@ the first real docs here.
 
 - `docs/README.md` is the first docs landing page.
 - `AGENTS.md` contains working rules for agents in this repo.
+- `docs/tools/blog-website-maker.md` is the first reusable public tool
+  playbook.
+- `scripts/create_blog_site.py` scaffolds a small Astro Markdown blog.
