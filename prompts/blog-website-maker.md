@@ -13,8 +13,9 @@ workshop.
 
 1. Ask at most two questions before scaffolding.
 2. If the human gives a subject, derive a site name, slug, audience, and tone.
-3. Build a static Astro blog with Markdown posts unless the repo already has a
-   different clear stack.
+3. Choose Astro by default for new blogs, or Jekyll when the source site is
+   already Jekyll, GitHub Pages compatibility matters, or the human asks for a
+   Jekyll starter.
 4. Use title plus TLDR cards on the blog index.
 5. Generate three quick theme prototypes for the human to choose from.
 6. Create a licence-safe asset plan before adding images.
@@ -33,6 +34,7 @@ workshop.
 | Need | Default |
 | --- | --- |
 | Generator | Astro |
+| Alternate generator | Jekyll for existing Jekyll/GitHub Pages paths |
 | Content | Markdown posts |
 | Hosting | Cloudflare Pages or GitHub Pages |
 | First post | A welcome/manifesto post |
@@ -45,19 +47,20 @@ workshop.
 ## Creation Steps
 
 1. Confirm the inferred brief in one short paragraph.
-2. Run `scripts/create_blog_site.py` if available.
-3. Edit the generated homepage and posts to match the user's subject.
-4. Generate/check `/theme-preview/` so the human can choose a visual direction.
-5. Run `scripts/plan_blog_assets.py` if available.
-6. Run `npm install` if dependencies are missing and network is allowed.
-7. Run `npm run build`.
-8. Fix build errors.
-9. Commit.
-10. Give the human one local URL or one exact deployment step.
+2. Pick Astro or Jekyll using the documented platform choice.
+3. Run `scripts/create_blog_site.py` for Astro or `scripts/create_jekyll_blog_site.py` for Jekyll.
+4. Edit the generated homepage and posts to match the user's subject.
+5. Generate/check `/theme-preview/` so the human can choose a visual direction.
+6. Run `scripts/plan_blog_assets.py` if available.
+7. Install dependencies if tools/network are available.
+8. Run the stack build command: `npm run build` for Astro, `bundle exec jekyll build` for Jekyll.
+9. Fix build errors.
+10. Commit.
+11. Give the human one local URL or one exact deployment step.
 
 ## First Response Template
 
 I will make a simple static blog for `<subject>` called `<site name>`. It will
-use Markdown posts, TLDR cards on the index, draft-first publishing, three theme
-prototypes, and a licence-safe image plan. I will scaffold it now and verify the
-build.
+use `<Astro or Jekyll>`, Markdown posts, TLDR cards on the index, draft-first
+publishing, three theme prototypes, and a licence-safe image plan. I will
+scaffold it now and verify the build where the local tools allow it.

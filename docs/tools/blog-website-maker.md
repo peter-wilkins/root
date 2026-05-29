@@ -9,7 +9,7 @@ making the human learn hosting, themes, frontmatter, or build tooling first.
 
 ## Default Choice
 
-Use a static Astro blog with Markdown posts.
+Use a static Astro blog with Markdown posts for a brand-new site.
 
 | Decision | Default |
 | --- | --- |
@@ -20,6 +20,18 @@ Use a static Astro blog with Markdown posts.
 | Public state | Drafts hidden until explicitly published |
 | Asset rule | Put small images in the repo; use object storage later for large media |
 | Theme rule | Generate three quick theme prototypes before the human commits to a look |
+
+## Platform Choice
+
+Astro is the default, but Jekyll is a first-class option.
+
+| Choose | When | Starter |
+| --- | --- | --- |
+| Astro | New blog, Cloudflare Pages, fast iteration, simple TypeScript/Markdown stack. | `scripts/create_blog_site.py` |
+| Jekyll | Existing site is Jekyll, GitHub Pages compatibility matters, or the human wants a familiar Jekyll starter. | `scripts/create_jekyll_blog_site.py` |
+
+Do not convert a working Jekyll site to Astro just because Astro is the default.
+Preserve the source site's working model unless there is a clear benefit.
 
 ## First Questions
 
@@ -41,15 +53,16 @@ Do not block on branding, logo, analytics, newsletter, comments, or CMS.
 | Step | Agent action | Human outcome |
 | --- | --- | --- |
 | 1 | Restate the site name, subject, audience, and tone in one short paragraph. | The human sees the shape before files are created. |
-| 2 | Scaffold the Astro blog with `scripts/create_blog_site.py`. | A working local project appears. |
-| 3 | Create a home page that says what the blog is and why it exists. | The first screen is real content, not template filler. |
-| 4 | Create `/blog/` with title plus TLDR cards. | Readers can scan without opening every post. |
-| 5 | Create `/theme-preview/` with three visual directions. | The human can choose a feel instead of describing design in abstract. |
-| 6 | Create an asset plan with `scripts/plan_blog_assets.py`. | Images are chosen deliberately and with licence metadata. |
-| 7 | Create one welcome post and one draft idea post. | The human has an editable starting point. |
-| 8 | Run `npm install` and `npm run build` when tools/network allow it. | The agent proves the site builds. |
-| 9 | Commit the scaffold. | Git becomes the recovery point. |
-| 10 | Give one preview URL or one exact next hosting step. | The human is not left holding a setup puzzle. |
+| 2 | Choose Astro or Jekyll using the platform matrix. | The tool matches the user's context instead of forcing one stack. |
+| 3 | Scaffold the blog with `scripts/create_blog_site.py` or `scripts/create_jekyll_blog_site.py`. | A working local project appears. |
+| 4 | Create a home page that says what the blog is and why it exists. | The first screen is real content, not template filler. |
+| 5 | Create `/blog/` with title plus TLDR cards. | Readers can scan without opening every post. |
+| 6 | Create `/theme-preview/` with three visual directions. | The human can choose a feel instead of describing design in abstract. |
+| 7 | Create an asset plan with `scripts/plan_blog_assets.py`. | Images are chosen deliberately and with licence metadata. |
+| 8 | Create one welcome post and one draft idea post. | The human has an editable starting point. |
+| 9 | Run the stack's build command when tools/network allow it. | The agent proves the site builds. |
+| 10 | Commit the scaffold. | Git becomes the recovery point. |
+| 11 | Give one preview URL or one exact next hosting step. | The human is not left holding a setup puzzle. |
 
 ## Theme Prototypes
 
@@ -102,7 +115,7 @@ Default source preference:
 Avoid saying "copyright-free" to users. Say "permission-safe" or
 "licence-safe" unless the asset is genuinely public domain.
 
-## File Shape
+## Astro File Shape
 
 ```text
 blog-name/
@@ -117,6 +130,21 @@ blog-name/
     pages/blog/index.astro
     pages/blog/[slug].astro
     styles/global.css
+```
+
+## Jekyll File Shape
+
+```text
+blog-name/
+  README.md
+  Gemfile
+  _config.yml
+  _layouts/
+  _posts/
+  _drafts/
+  blog/index.html
+  theme-preview.md
+  assets/css/style.css
 ```
 
 ## Publishing Safety
@@ -144,10 +172,20 @@ For Cloudflare Pages, use:
 If the site is in a subfolder of a larger repo, set the Cloudflare root directory
 to that subfolder.
 
+For GitHub Pages with Jekyll, use:
+
+| Field | Value |
+| --- | --- |
+| Source | GitHub Pages branch/folder setting |
+| Build command | GitHub Pages Jekyll build, or `bundle exec jekyll build` in CI |
+| Build output directory | `_site` |
+
 ## Ready Prompt
 
 Use `prompts/blog-website-maker.md` when starting an agent in this mode.
 
-Use `scripts/create_blog_site.py` for the first scaffold.
+Use `scripts/create_blog_site.py` for the first Astro scaffold.
+
+Use `scripts/create_jekyll_blog_site.py` for the first Jekyll scaffold.
 
 Use `scripts/plan_blog_assets.py` for the first image plan.
