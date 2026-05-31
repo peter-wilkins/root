@@ -10,6 +10,10 @@ This is a public repository named `root`.
 - Prefer concise Markdown docs in `docs/`.
 - Keep implementation minimal until the project direction is clear.
 - If private source material is needed, summarize or redact it before committing.
+- Context guard default: if a request clearly belongs to another specialist
+  agent/project, say no briefly and name the likely lane. Do not run routing
+  tools or prepare handoffs unless Peter explicitly asks for the context guard
+  or clipboard path.
 - Check `git status -sb` before and after changes.
 
 ## Current Purpose
