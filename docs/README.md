@@ -9,6 +9,12 @@ This folder is ready for public documentation.
 | [Blog Website Maker](tools/blog-website-maker.md) | Agent playbook for turning "please make me a blog website" into a small Astro or Jekyll Markdown blog. |
 | [Blog Article Editor](tools/blog-article-editor.md) | Agent playbook for loading an existing article, grilling the human on the real point, and rewriting safely. |
 
+## Project Notes
+
+| Note | Purpose |
+| --- | --- |
+| [ChatGPT Root Project Digest](chatgpt-root-project-digest.md) | Public-safe digest of the ChatGPT `Root` project scrape, with raw source kept in ignored local cache. |
+
 ## Scripts
 
 | Script | Purpose |
